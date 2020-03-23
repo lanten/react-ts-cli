@@ -1,1 +1,1 @@
-# rc-ts-cli
+# react-ts-cli
