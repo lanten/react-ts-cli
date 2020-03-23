@@ -27,7 +27,7 @@ for (const key in proxy) {
 
 if (BUILD_ENV === 'mock') {
   proxy['/mock'] = {
-    target: 'http://yapi.shebaotong.com',
+    target: 'http://xx.com',
     changeOrigin: true,
   }
 }

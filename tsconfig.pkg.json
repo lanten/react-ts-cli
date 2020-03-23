@@ -5,7 +5,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "sourceMap": true,
-    "rootDir": "build",
+    "rootDir": "lib",
     "jsx": "react",
     "strict": true,
     "moduleResolution": "node",
@@ -25,7 +25,7 @@
     ]
   },
   "include": [
-    "build/**/*.ts",
+    "lib",
   ],
   "exclude": [
     "node_modules",
