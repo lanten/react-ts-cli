@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import { clearDir, exConsole } from '../utils'
 
-import * as devConfig from '../dev.config'
+import * as devConfig from '../config/default.config'
 import webpackConfig from '../webpack.config'
 import buildCommon from './build-common'
 

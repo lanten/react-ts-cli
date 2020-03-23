@@ -6,8 +6,9 @@
   "scripts": {
     "pu": "npm publish --access=public",
     "prepare": "npm run build:pkg",
-    "build:pkg": "rm -rf ./dist && tsc -p ./tsconfig.pkg.json -d",
-    "test": "npm run build:pkg && node dist/tasks/dev-server.js"
+    "build:pkg": "rm -rf ./dist && tsc -p ./tsconfig.json -d",
+    "test": "npm run build:pkg && node dist/tasks/dev-server.js",
+    "get-config": "npm run build:pkg && node dist/config/get-config.js"
   },
   "bin": {
     "react-ts": "./bin/react-ts.js"
@@ -16,6 +17,7 @@
     "bin",
     "build",
     "lib",
+    "types",
     "dist"
   ],
   "devDependencies": {},

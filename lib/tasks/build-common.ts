@@ -1,6 +1,6 @@
 import webpack, { Configuration } from 'webpack'
 
-import { env as envConfig } from '../dev.config'
+import { env as envConfig } from '../config/default.config'
 
 interface BuildConfig {
   env: keyof typeof envConfig

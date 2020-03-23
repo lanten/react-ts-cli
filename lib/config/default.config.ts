@@ -5,7 +5,7 @@ export const projectName = 'demo'
 /** 项目标题 */
 export const projectTitle = 'demo'
 /** 本地服务端口 */
-export const port = 16001
+export const port = 18001
 /** 业务代码主目录 */
 export const source = path.resolve(__dirname, '../src')
 /** html 模板 */
@@ -29,10 +29,7 @@ export const alias = {
   '@root': path.resolve(__dirname, '../'),
 }
 
-export const provide = {
-  $api: path.resolve(__dirname, '../src/api'),
-  $tools: path.resolve(__dirname, '../src/tools'),
-}
+export const provide = {}
 
 export const proxy = {}
 

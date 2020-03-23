@@ -4,8 +4,12 @@ import address from 'address'
 import WebpackDevServer, { Configuration } from 'webpack-dev-server'
 
 import { exConsole } from '../utils'
-import { port, proxy, env, host as devHost, projectName } from '../dev.config'
 import webpackConfig from '../webpack.config'
+import { config } from '../config'
+
+const { port, proxy, env, host: devHost, projectName } = config
+
+console.log(config)
 
 process.env.NODE_ENV = 'development'
 

@@ -8,7 +8,18 @@ import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import tsImportPluginFactory from 'ts-import-plugin'
 
-import { dist, template, alias, provide, env, htmlConfig, COMMON_ENV, devPublicPath } from './dev.config'
+import { Options } from 'ts-loader'
+
+import {
+  dist,
+  template,
+  alias,
+  provide,
+  env,
+  htmlConfig,
+  COMMON_ENV,
+  devPublicPath,
+} from './config/default.config'
 
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 
@@ -20,13 +31,14 @@ const tsLoader: webpack.RuleSetUseItem = {
   loader: 'ts-loader',
   options: {
     transpileOnly: true,
-    getCustomTransformers: () => ({
-      before: [tsImportPluginFactory(/** options */)],
-    }),
-    compilerOptions: {
-      module: 'es2015',
-    },
-  },
+    // configFile:'',
+
+    getCustomTransformers: (() => {
+      return {
+        before: [tsImportPluginFactory()],
+      }
+    }) as any,
+  } as Options,
 }
 
 if (NODE_ENV === 'development') {
@@ -60,13 +72,13 @@ const webpackConfig: Configuration = {
     rules: [
       {
         test: /(?<!\.d)\.tsx?$/,
-        loader: [tsLoader, 'eslint-loader'],
+        loader: [tsLoader],
         exclude: /node_modules/,
       },
       {
         test: /\.jsx?$/,
         include: appPath,
-        loader: [tsLoader, 'eslint-loader'],
+        loader: [tsLoader],
         exclude: /node_modules/,
       },
       {
