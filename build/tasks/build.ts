@@ -30,7 +30,7 @@ function build() {
       exConsole.info('All Done.')
     })
     .finally(() => process.exit())
-    .catch(err => {
+    .catch((err) => {
       throw new Error(err)
     })
 }

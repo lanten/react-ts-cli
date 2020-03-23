@@ -47,13 +47,13 @@ const devServerOptions: WebpackDevServer.Configuration = {
 }
 
 function startRenderer(): Promise<webpack.Stats> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     process.env.port = String(port)
     process.env.host = host
 
     const hotClient = ['webpack-dev-server/client', 'webpack/hot/only-dev-server']
     if (typeof webpackConfig.entry === 'object') {
-      Object.keys(webpackConfig.entry).forEach(name => {
+      Object.keys(webpackConfig.entry).forEach((name) => {
         if (!webpackConfig.entry) throw new Error('webpackConfig.entry')
         const value = webpackConfig.entry[name]
         if (Array.isArray(value)) {
@@ -70,7 +70,7 @@ function startRenderer(): Promise<webpack.Stats> {
     webpackConfig.devtool = 'source-map'
 
     const rendererCompiler = webpack(webpackConfig)
-    rendererCompiler.hooks.done.tap('done', stats => {
+    rendererCompiler.hooks.done.tap('done', (stats) => {
       exConsole.success(
         `Server renderer start at ${chalk.magenta.underline(`http://${host}:${port}/${projectName}/`)}`
       )
@@ -79,7 +79,7 @@ function startRenderer(): Promise<webpack.Stats> {
 
     const server = new WebpackDevServer(rendererCompiler as any, devServerOptions)
 
-    server.listen(port, host, err => {
+    server.listen(port, host, (err) => {
       if (err) {
         exConsole.error(err)
       }

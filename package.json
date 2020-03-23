@@ -1,31 +1,24 @@
 {
   "name": "@lanten233/react-ts-cli",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pu": "npm publish --access=public"
+    "pu": "npm publish --access=public",
+    "prepare": "npm run build:pkg",
+    "build:pkg": "rm -rf ./dist && tsc -p ./tsconfig.pkg.json -d",
+    "test": "ts-node build/tasks/dev-server.ts"
   },
   "bin": {
     "react-ts": "./bin/react-ts.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lanten/react-ts-cli.git"
-  },
-  "author": "lanten",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/lanten/react-ts-cli/issues"
-  },
-  "homepage": "https://github.com/lanten/react-ts-cli#readme",
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.24.0",
-    "@typescript-eslint/parser": "^2.24.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-prettier": "^3.1.2",
-    "ts-node": "^8.8.1"
-  },
+  "files": [
+    "bin",
+    "build",
+    "lib",
+    "dist"
+  ],
+  "devDependencies": {},
   "dependencies": {
     "@types/html-webpack-plugin": "^3.2.2",
     "@types/mini-css-extract-plugin": "^0.9.1",
@@ -36,13 +29,18 @@
     "@types/webpack-dev-server": "^3.10.1",
     "@types/webpack-env": "^1.15.1",
     "@types/webpackbar": "^2.6.0",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
+    "address": "^1.1.2",
     "chalk": "^3.0.0",
     "cross-spawn": "^7.0.1",
     "css-hot-loader": "^1.4.4",
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
     "eslint-loader": "^3.0.3",
     "eslint-plugin-jsx-control-statements": "^2.2.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.19.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^3.2.0",
@@ -53,10 +51,21 @@
     "terser-webpack-plugin": "^2.3.5",
     "ts-import-plugin": "^1.6.5",
     "ts-loader": "^6.2.2",
+    "ts-node": "^8.8.1",
     "typescript": "^3.8.3",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpackbar": "^4.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lanten/react-ts-cli.git"
+  },
+  "author": "lanten",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lanten/react-ts-cli/issues"
+  },
+  "homepage": "https://github.com/lanten/react-ts-cli#readme"
 }

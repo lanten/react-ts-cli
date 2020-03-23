@@ -18,7 +18,7 @@ export function clearDir(pathStr?: string, delDir?: boolean, createDir?: boolean
 
   if (fs.existsSync(pathStr)) {
     files = fs.readdirSync(pathStr)
-    files.forEach(file => {
+    files.forEach((file) => {
       const curPath = path.join(pathStr, file)
 
       if (fs.statSync(curPath).isDirectory()) {

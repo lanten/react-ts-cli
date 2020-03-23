@@ -18,14 +18,14 @@
       "webpack-env",
       "node"
     ],
-    "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@root/*": [
-        "*"
-      ]
-    },
+    // "paths": {
+    //   "@/*": [
+    //     "src/*"
+    //   ],
+    //   "@root/*": [
+    //     "*"
+    //   ]
+    // },
     "lib": [
       "esnext",
       "dom",
@@ -34,11 +34,11 @@
       "es5"
     ]
   },
-  "include": [
-    "types",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-  ],
+  // "include": [
+  //   "types",
+  //   "src/**/*.ts",
+  //   "src/**/*.tsx",
+  // ],
   "exclude": [
     "node_modules"
   ]

@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "sourceMap": true,
+    "rootDir": "build",
+    "jsx": "react",
+    "strict": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost",
+      "es5"
+    ]
+  },
+  "include": [
+    "build/**/*.ts",
+  ],
+  "exclude": [
+    "node_modules",
+  ]
+}
