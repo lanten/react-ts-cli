@@ -30,11 +30,4 @@
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "swaggerToTypes.swaggerJsonUrl": [
-    {
-      "title": "个税通 API",
-      "url": "http://shebao-geshuitong-api.c29675d010ae94f3e868d99177da0d9ed.cn-shenzhen.alicontainer.com/v2/api-docs"
-    }
-  ],
-  "swaggerToTypes.savePath": "types/api-interface"
 }
