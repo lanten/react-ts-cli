@@ -32,14 +32,13 @@ const tsLoader: webpack.RuleSetUseItem = {
   loader: 'ts-loader',
   options: {
     transpileOnly: true,
-    // configFile:'',
-
-    getCustomTransformers: (() => {
-      return {
-        before: [tsImportPluginFactory()],
-      }
-    }) as any,
-  } as Options,
+    getCustomTransformers: () => ({
+      before: [tsImportPluginFactory(/** options */)],
+    }),
+    compilerOptions: {
+      module: 'es2015',
+    },
+  },
 }
 
 if (NODE_ENV === 'development') {
@@ -119,7 +118,7 @@ let webpackConfig: Configuration = {
       ((): { [key: string]: any } => {
         const defines = {}
         const variables = Object.assign({}, COMMON_ENV, ENV_CONFIG.variables)
-        Object.keys(variables).forEach((key) => {
+        Object.keys(variables).forEach(key => {
           const val = variables[key]
           defines[`process.env.${key}`] = typeof val === 'string' ? `"${val}"` : JSON.stringify(val)
         })
