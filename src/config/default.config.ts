@@ -21,7 +21,7 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
       keywords: `${projectTitle}`,
     },
     alias: {
-      '@': path.resolve(rootPath, '../src'),
+      '@': path.resolve(rootPath, 'src'),
     },
 
     provide: {},
