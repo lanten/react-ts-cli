@@ -5,15 +5,15 @@ import WebpackDevServer, { Configuration } from 'webpack-dev-server'
 
 import { exConsole } from '../utils'
 import webpackConfig from '../webpack.config'
-import { config } from '../config'
+import { reactTsConfig } from '../config'
 
-const { port, proxy, env, host: devHost, projectName } = config
+const { port, proxy, env, host: devHost, projectName } = reactTsConfig
 
-console.log(config)
+console.log(reactTsConfig)
 
 process.env.NODE_ENV = 'development'
 
-const { BUILD_ENV = '' } = process.env
+const { BUILD_ENV = 'dev' } = process.env
 
 for (const key in proxy) {
   const val = proxy[key]
@@ -92,7 +92,7 @@ function startRenderer(): Promise<webpack.Stats> {
 }
 
 async function startDevServer() {
-  exConsole.info(`${process.env.BUILD_ENV} starting...`)
+  exConsole.info(`${BUILD_ENV} starting...`)
   await startRenderer()
 }
 

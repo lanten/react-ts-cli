@@ -15,7 +15,7 @@ syncExec({
   msg: 'Config compile',
 })
 
-const config = require(path.resolve(outPath, configFileName))
+const userConfig = require(path.resolve(outPath, configFileName))
 
 function syncExec(paramsSrc: { bash: string; msg?: string; inputPath?: string }) {
   let params = paramsSrc
@@ -35,7 +35,4 @@ function syncExec(paramsSrc: { bash: string; msg?: string; inputPath?: string })
   }
 }
 
-export default {
-  ...defaultConfig,
-  ...config,
-}
+export default Object.assign({}, defaultConfig, userConfig.default ? userConfig.default : userConfig)

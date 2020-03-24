@@ -59,6 +59,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 0,
     '@typescript-eslint/no-empty-interface': 0,
     '@typescript-eslint/no-empty-function': 0,
-    // '@typescript-eslint/no-unused-vars': 0, // 导入内容未使用
+    '@typescript-eslint/no-inferrable-types': 0,
+    '@typescript-eslint/no-namespace': 0,
   },
 }

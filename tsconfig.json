@@ -5,7 +5,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "sourceMap": false,
-    "rootDir": "lib",
+    "rootDir": "src",
     "strict": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -22,7 +22,7 @@
     ]
   },
   "include": [
-    "lib",
+    "src",
   ],
   "exclude": [
     "node_modules",

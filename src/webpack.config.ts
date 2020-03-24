@@ -1,4 +1,4 @@
-import path from 'path'
+// import path from 'path'
 import webpack, { Configuration } from 'webpack'
 
 import Webpackbar from 'webpackbar'
@@ -7,23 +7,13 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import tsImportPluginFactory from 'ts-import-plugin'
-
 import { Options } from 'ts-loader'
 
-import {
-  dist,
-  template,
-  alias,
-  provide,
-  env,
-  htmlConfig,
-  COMMON_ENV,
-  devPublicPath,
-} from './config/default.config'
+import { reactTsConfig } from './config'
 
+const { dist, htmlTemplate, alias, provide, env, htmlConfig, COMMON_ENV, devPublicPath, source } = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 
-const appPath = path.join(__dirname, '../src')
 const ENV_CONFIG = env[BUILD_ENV]
 const styleLoader = [{ loader: 'css-loader' }]
 
@@ -52,8 +42,7 @@ const webpackConfig: Configuration = {
   target: 'web',
 
   entry: {
-    iconfont: `${appPath}/assets/iconfont/iconfont.css`,
-    app: `${appPath}/index.tsx`,
+    app: `${source}/index.ts`,
   },
 
   resolve: {
@@ -77,7 +66,6 @@ const webpackConfig: Configuration = {
       },
       {
         test: /\.jsx?$/,
-        include: appPath,
         loader: [tsLoader],
         exclude: /node_modules/,
       },
@@ -131,7 +119,7 @@ const webpackConfig: Configuration = {
     ),
     new Webpackbar(),
     new htmlWebpackPlugin({
-      template: template,
+      template: htmlTemplate,
       filename: 'index.html',
       templateParameters: htmlConfig,
     }),
