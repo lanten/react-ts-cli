@@ -11,7 +11,18 @@ import { Options } from 'ts-loader'
 
 import { reactTsConfig } from './config'
 
-const { dist, htmlTemplate, alias, provide, env, htmlConfig, COMMON_ENV, devPublicPath, source } = reactTsConfig
+const {
+  dist,
+  htmlTemplate,
+  alias,
+  provide,
+  env,
+  htmlConfig,
+  COMMON_ENV,
+  devPublicPath,
+  source,
+  afterWebpackConfig,
+} = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 
 const ENV_CONFIG = env[BUILD_ENV]
@@ -37,7 +48,7 @@ if (NODE_ENV === 'development') {
   styleLoader.unshift({ loader: MiniCssExtractPlugin.loader })
 }
 
-const webpackConfig: Configuration = {
+let webpackConfig: Configuration = {
   mode: NODE_ENV as 'development' | 'production',
   target: 'web',
 
@@ -61,12 +72,12 @@ const webpackConfig: Configuration = {
     rules: [
       {
         test: /(?<!\.d)\.tsx?$/,
-        loader: [tsLoader],
+        loader: [tsLoader, 'eslint-loader'],
         exclude: /node_modules/,
       },
       {
         test: /\.jsx?$/,
-        loader: [tsLoader],
+        loader: [tsLoader, 'eslint-loader'],
         exclude: /node_modules/,
       },
       {
@@ -153,6 +164,10 @@ if (NODE_ENV === 'development') {
       },
     })
   )
+}
+
+if (afterWebpackConfig) {
+  webpackConfig = afterWebpackConfig(webpackConfig)
 }
 
 export default webpackConfig

@@ -1,8 +1,9 @@
 {
   "name": "@lanten233/react-ts-cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "dist/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "pu": "npm publish --access=public",
     "prepare": "npm run build:pkg",

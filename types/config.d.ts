@@ -1,3 +1,5 @@
+import { Configuration } from 'webpack'
+
 export declare interface EnvVariables {
   /** 项目名称 */
   PROJECT_NAME?: string
@@ -37,11 +39,14 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   alias: {
     [key: string]: string
   }
-
   /** 全局加载的文件 */
   provide: {
     [key: string]: any
   }
+
+  /** webpack.config 后处理 */
+  afterWebpackConfig: (webpackConfig: Configuration) => Configuration
+
   /** dev-server 中使用的代理配置 */
   proxy: any
   /** 公共环境变量 */
@@ -52,8 +57,8 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   }
 }
 
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv extends EnvVariables {}
-  }
-}
+// declare global {
+//   namespace NodeJS {
+//     interface ProcessEnv extends EnvVariables {}
+//   }
+// }

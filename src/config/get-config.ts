@@ -2,6 +2,7 @@ import path from 'path'
 import { execSync } from 'child_process'
 import { exConsole } from '../utils'
 import * as defaultConfig from './default.config'
+import { ReactTsConfig } from '../../types/'
 
 const configFileName = 'react-ts.config'
 const rootPath = process.cwd()
@@ -35,4 +36,10 @@ function syncExec(paramsSrc: { bash: string; msg?: string; inputPath?: string })
   }
 }
 
-export default Object.assign({}, defaultConfig, userConfig.default ? userConfig.default : userConfig)
+const config: ReactTsConfig = Object.assign(
+  {},
+  defaultConfig,
+  userConfig.default ? userConfig.default : userConfig
+)
+
+export default config
