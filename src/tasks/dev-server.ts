@@ -62,7 +62,7 @@ function startRenderer(): Promise<webpack.Stats> {
 
     const rendererCompiler = webpack(webpackConfig)
     rendererCompiler.hooks.done.tap('done', (stats) => {
-      exConsole.success(`[Server start] at : ${chalk.magenta.underline(`http://${host}:${port}`)}`)
+      exConsole.success(`Server start at ${chalk.magenta.underline(`http://${host}:${port}`)}`)
       resolve(stats)
     })
 
@@ -77,7 +77,7 @@ function startRenderer(): Promise<webpack.Stats> {
 }
 
 async function startDevServer() {
-  exConsole.info(`[${BUILD_ENV} starting...]`)
+  exConsole.info(chalk.cyanBright(`${BUILD_ENV} Starting...`))
   await startRenderer()
 }
 
