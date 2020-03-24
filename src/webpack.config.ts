@@ -20,7 +20,7 @@ const {
   htmlConfig,
   COMMON_ENV,
   devPublicPath,
-  source,
+  entry,
   afterWebpackConfig,
 } = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
@@ -52,9 +52,7 @@ let webpackConfig: Configuration = {
   mode: NODE_ENV as 'development' | 'production',
   target: 'web',
 
-  entry: {
-    app: `${source}/index.ts`,
-  },
+  entry,
 
   resolve: {
     alias,

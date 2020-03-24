@@ -9,8 +9,8 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
   return {
     projectName,
     projectTitle,
-    port: 18001,
-    source: path.resolve(rootPath, 'src'),
+    port: 18081,
+    entry: path.resolve(rootPath, 'src/index.ts'),
     htmlTemplate: path.resolve(rootPath, 'src/index.html'),
     dist: path.resolve(rootPath, 'dist'),
     host: '0.0.0.0',

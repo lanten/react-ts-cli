@@ -17,14 +17,14 @@ export declare interface EnvOptions<V = EnvVariables> {
 }
 
 export declare interface ReactTsConfig<V = EnvVariables> {
-  /** 项目名称 = url 中的项目前缀 */
+  /** 项目名称 */
   projectName: string
   /** 项目标题 */
   projectTitle: string
-  /** 本地服务端口 */
+  /** 本地服务端口 默认: 18081 */
   port: number
-  /** 业务代码主目录 默认: src */
-  source: string
+  /** 入口文件配置 默认: 'src/index.ts' */
+  entry: Configuration['entry']
   /** html 模板 默认: src/index.html */
   htmlTemplate: string
   /** 编译输出目录 默认: dist */
