@@ -1,4 +1,3 @@
-import * as defaultConfig from './default.config'
-export type ReactTsConfig = typeof defaultConfig
+export * as defaultConfig from './default.config'
 
 export { default as reactTsConfig } from './get-config'
