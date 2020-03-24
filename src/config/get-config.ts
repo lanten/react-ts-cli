@@ -1,10 +1,10 @@
 import path from 'path'
 import { execSync } from 'child_process'
 import { exConsole } from '../utils'
-import * as defaultConfig from './default.config'
+import { assignDefaultConfig } from './default.config'
 import { ReactTsConfig } from '../../types/'
 
-const configFileName = 'react-ts.config'
+const configFileName = 'config/index'
 const rootPath = process.cwd()
 const inputPath = path.resolve(rootPath, `${configFileName}.ts`)
 const outPath = path.resolve(__dirname, './')
@@ -16,7 +16,8 @@ syncExec({
   msg: 'Config compile',
 })
 
-const userConfig = require(path.resolve(outPath, configFileName))
+let userConfig = require(path.resolve(outPath, configFileName))
+if (userConfig.default) userConfig = userConfig.default
 
 function syncExec(paramsSrc: { bash: string; msg?: string; inputPath?: string }) {
   let params = paramsSrc
@@ -36,10 +37,6 @@ function syncExec(paramsSrc: { bash: string; msg?: string; inputPath?: string })
   }
 }
 
-const config: ReactTsConfig = Object.assign(
-  {},
-  defaultConfig,
-  userConfig.default ? userConfig.default : userConfig
-)
+const config: ReactTsConfig = Object.assign({}, assignDefaultConfig(userConfig), userConfig)
 
 export default config

@@ -9,8 +9,6 @@ import { reactTsConfig } from '../config'
 
 const { port, proxy, env, host: devHost, projectName } = reactTsConfig
 
-console.log(reactTsConfig)
-
 process.env.NODE_ENV = 'development'
 
 const { BUILD_ENV = 'dev' } = process.env

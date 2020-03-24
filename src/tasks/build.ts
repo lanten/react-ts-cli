@@ -1,11 +1,11 @@
 import chalk from 'chalk'
 import { clearDir, exConsole } from '../utils'
 
-import * as devConfig from '../config/default.config'
+import { reactTsConfig } from '../config'
 import webpackConfig from '../webpack.config'
 import buildCommon from './build-common'
 
-const env = process.env.BUILD_ENV as keyof typeof devConfig.env
+const env = process.env.BUILD_ENV || 'dev'
 
 async function buildRenderer() {
   return buildCommon({ env, webpackConfig: webpackConfig }).then(() => {
@@ -14,11 +14,10 @@ async function buildRenderer() {
 }
 
 function build() {
-  const { dist } = devConfig
-  exConsole.info(chalk.cyanBright(`[Clear Dir...] : ${chalk.magenta.underline(devConfig.dist)}`))
+  exConsole.info(chalk.cyanBright(`[Clear Dir...] : ${chalk.magenta.underline(reactTsConfig.dist)}`))
 
   try {
-    clearDir(dist, false, true)
+    clearDir(reactTsConfig.dist, false, true)
   } catch (error) {
     exConsole.warn(error.message)
   }

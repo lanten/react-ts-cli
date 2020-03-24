@@ -45,7 +45,7 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   }
 
   /** webpack.config 后处理 */
-  afterWebpackConfig: (webpackConfig: Configuration) => Configuration
+  afterWebpackConfig?: (webpackConfig: Configuration) => Configuration
 
   /** dev-server 中使用的代理配置 */
   proxy: any
@@ -57,8 +57,10 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   }
 }
 
-// declare global {
-//   namespace NodeJS {
-//     interface ProcessEnv extends EnvVariables {}
-//   }
-// }
+export type ReactTsConfigPartial = Partial<ReactTsConfig>
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv extends EnvVariables {}
+  }
+}

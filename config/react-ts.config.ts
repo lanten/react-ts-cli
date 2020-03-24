@@ -1,5 +1,5 @@
 import path from 'path'
-import { ReactTsConfig } from './dist/config'
+import { ReactTsConfig } from '../types'
 
 const config: Partial<ReactTsConfig> = {
   projectName: 'demo',

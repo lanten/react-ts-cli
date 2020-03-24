@@ -15,6 +15,11 @@
     "types": [
       "node"
     ],
+    "paths": {
+      "@/*": [
+        "*"
+      ],
+    },
     "lib": [
       "esnext",
       "scripthost",
