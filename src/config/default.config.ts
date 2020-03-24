@@ -13,7 +13,7 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
     source: path.resolve(rootPath, 'src'),
     htmlTemplate: path.resolve(rootPath, 'src/index.html'),
     dist: path.resolve(rootPath, 'dist'),
-    host: 'localhost',
+    host: '0.0.0.0',
     devPublicPath: '/',
     htmlConfig: {
       title: `${projectTitle}`,

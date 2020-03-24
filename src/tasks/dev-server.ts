@@ -19,19 +19,8 @@ for (const key in proxy) {
     proxy[key] = { target: val }
   }
   proxy[key].target = val.target.replace(/\{(.+)\}/g, (_: string, type: string) => {
-    if (type === 'testEnv') {
-      return ['dev', 'mock'].includes(BUILD_ENV) ? 'daily' : BUILD_ENV
-    } else {
-      return ['mock'].includes(BUILD_ENV) ? 'daily' : BUILD_ENV
-    }
+    return process.env[type]
   })
-}
-
-if (BUILD_ENV === 'mock') {
-  proxy['/mock'] = {
-    target: 'http://xx.com',
-    changeOrigin: true,
-  }
 }
 
 const host = devHost || address.ip() || '0.0.0.0'
@@ -73,9 +62,7 @@ function startRenderer(): Promise<webpack.Stats> {
 
     const rendererCompiler = webpack(webpackConfig)
     rendererCompiler.hooks.done.tap('done', (stats) => {
-      exConsole.success(
-        `Server renderer start at ${chalk.magenta.underline(`http://${host}:${port}/${projectName}/`)}`
-      )
+      exConsole.success(`[Server start] at : ${chalk.magenta.underline(`http://${host}:${port}`)}`)
       resolve(stats)
     })
 
@@ -90,7 +77,7 @@ function startRenderer(): Promise<webpack.Stats> {
 }
 
 async function startDevServer() {
-  exConsole.info(`${BUILD_ENV} starting...`)
+  exConsole.info(`[${BUILD_ENV} starting...]`)
   await startRenderer()
 }
 
