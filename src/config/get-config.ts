@@ -5,19 +5,24 @@ import { exConsole } from '../utils'
 import { assignDefaultConfig } from './default.config'
 import { ReactTsConfig } from '../../types/'
 
-const configFileName = 'config/index'
+const configFolder = 'config'
 const rootPath = process.cwd()
-const inputPath = path.resolve(rootPath, `${configFileName}.ts`)
-const outPath = path.resolve(__dirname, './')
+const inputPath = path.resolve(rootPath, configFolder)
+const outPath = path.resolve(__dirname, configFolder)
 
 exConsole.info(chalk.cyanBright('Config Compiling...'))
 
+// syncExec({
+//   bash: `tsc --outDir ${outPath} --rootDir ${rootPath} --esModuleInterop --resolveJsonModule --allowSyntheticDefaultImports --suppressImplicitAnyIndexErrors --module commonjs --target es6 ${inputPath}`,
+//   msg: 'Config compile',
+// })
+
 syncExec({
-  bash: `tsc --outDir ${outPath} --rootDir ${rootPath} --esModuleInterop --resolveJsonModule --allowSyntheticDefaultImports --suppressImplicitAnyIndexErrors --module commonjs --target es6 ${inputPath}`,
+  bash: `tsc -p ${inputPath} --outDir ${outPath}`,
   msg: 'Config compile',
 })
 
-let userConfig = require(path.resolve(outPath, configFileName))
+let userConfig = require(outPath)
 if (userConfig.default) userConfig = userConfig.default
 
 function syncExec(paramsSrc: { bash: string; msg?: string; inputPath?: string }) {
