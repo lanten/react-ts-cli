@@ -69,7 +69,6 @@ let webpackConfig: Configuration = {
       {
         test: /(?<!\.d)\.tsx?$/,
         loader: [tsLoader, 'eslint-loader'],
-        exclude: /node_modules/,
       },
       {
         test: /\.jsx?$/,
