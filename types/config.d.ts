@@ -57,7 +57,7 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   }
 }
 
-export type ReactTsConfigPartial = Partial<ReactTsConfig>
+export type ReactTsConfigPartial<T> = Partial<ReactTsConfig<T>>
 
 declare global {
   namespace NodeJS {
