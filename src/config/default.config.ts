@@ -34,6 +34,11 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
       API_BASE: '',
     },
 
+    postcssOptions: {
+      ident: 'postcss',
+      plugins: [require('autoprefixer')()],
+    },
+
     env: {
       mock: {
         publicPath: '',

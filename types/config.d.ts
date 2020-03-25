@@ -43,10 +43,8 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   provide: {
     [key: string]: any
   }
-
   /** webpack.config 后处理 */
   afterWebpackConfig?: (webpackConfig: Configuration) => Configuration
-
   /** dev-server 中使用的代理配置 */
   proxy: any
   /** 公共环境变量 */
@@ -55,9 +53,27 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   env: {
     [key: string]: EnvOptions
   }
+  /** postcss 相关配置 */
+  postcssOptions: {
+    /**	Enable PostCSS Parser support in CSS-in-JS */
+    exec?: boolean
+    /** Set PostCSS Parser */
+    parser?: string | object
+    /** Set PostCSS Syntax */
+    syntax?: string | object
+    /** Set PostCSS Stringifier */
+    stringifier?: string | object
+    /** Set postcss.config.js config path && ctx */
+    config?: object
+    /** Set PostCSS Plugins */
+    plugins?: any[] | Function
+    /** Enable Source Maps */
+    sourceMap?: string | boolean
+    ident: string
+  }
 }
 
-export type ReactTsConfigPartial<T> = Partial<ReactTsConfig<T>>
+export type ReactTsConfigPartial<T = EnvVariables> = Partial<ReactTsConfig<T>>
 
 declare global {
   namespace NodeJS {

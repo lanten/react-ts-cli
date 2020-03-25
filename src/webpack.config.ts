@@ -7,7 +7,6 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import tsImportPluginFactory from 'ts-import-plugin'
-import { Options } from 'ts-loader'
 
 import { reactTsConfig } from './config'
 
@@ -22,11 +21,10 @@ const {
   devPublicPath,
   entry,
   afterWebpackConfig,
+  postcssOptions,
 } = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
-
 const ENV_CONFIG = env[BUILD_ENV]
-const styleLoader = [{ loader: 'css-loader' }]
 
 const tsLoader: webpack.RuleSetUseItem = {
   loader: 'ts-loader',
@@ -41,6 +39,7 @@ const tsLoader: webpack.RuleSetUseItem = {
   },
 }
 
+const styleLoader = [{ loader: 'css-loader' }, { loader: 'postcss-loader', options: postcssOptions }]
 if (NODE_ENV === 'development') {
   styleLoader.unshift({ loader: 'css-hot-loader' }, { loader: 'style-loader' })
 } else {
@@ -86,6 +85,15 @@ let webpackConfig: Configuration = {
             options: {
               javascriptEnabled: true,
             },
+          },
+        ],
+      },
+      {
+        test: /\.(scss|sass)$/,
+        use: [
+          ...styleLoader,
+          {
+            loader: 'sass-loader',
           },
         ],
       },
