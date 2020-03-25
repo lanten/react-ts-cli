@@ -107,7 +107,7 @@ let webpackConfig: Configuration = {
         options: {
           outputPath: 'assets',
           esModule: false,
-          name: '[name].[ext]',
+          name: '[name]-[hash:7].[ext]',
         },
       },
     ],
@@ -126,7 +126,7 @@ let webpackConfig: Configuration = {
       ((): { [key: string]: any } => {
         const defines = {}
         const variables = Object.assign({}, COMMON_ENV, ENV_CONFIG.variables)
-        Object.keys(variables).forEach(key => {
+        Object.keys(variables).forEach((key) => {
           const val = variables[key]
           defines[`process.env.${key}`] = typeof val === 'string' ? `"${val}"` : JSON.stringify(val)
         })
