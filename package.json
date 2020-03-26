@@ -1,6 +1,6 @@
 {
-  "name": "@lanten233/react-ts-cli",
-  "version": "0.2.5",
+  "name": "@sbc-fe/react-ts-cli",
+  "version": "0.2.6",
   "description": "",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
