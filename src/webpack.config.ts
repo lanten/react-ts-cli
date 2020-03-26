@@ -1,6 +1,4 @@
-// import path from 'path'
 import webpack, { Configuration } from 'webpack'
-
 import Webpackbar from 'webpackbar'
 import htmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
