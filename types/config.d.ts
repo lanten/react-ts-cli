@@ -69,7 +69,7 @@ export declare interface ReactTsConfig<V = EnvVariables> {
     plugins?: any[] | Function
     /** Enable Source Maps */
     sourceMap?: string | boolean
-    ident: string
+    ident?: string
   }
 }
 
