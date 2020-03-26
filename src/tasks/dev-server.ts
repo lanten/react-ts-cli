@@ -62,7 +62,7 @@ function startRenderer(): Promise<webpack.Stats> {
 
     const rendererCompiler = webpack(webpackConfig)
     rendererCompiler.hooks.done.tap('done', (stats) => {
-      exConsole.success('Dev Server started.')
+      exConsole.success(`Dev Server started. (${chalk.yellow(projectName)})`)
       exConsole.info(`${chalk.dim('[ LOCAL ]')}: ${chalk.magenta.underline(`http://${host}:${port}`)}`)
       exConsole.info(`${chalk.dim('[ IP    ]')}: ${chalk.magenta.underline(`http://${address.ip()}:${port}`)}`)
       resolve(stats)
