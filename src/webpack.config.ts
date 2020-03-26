@@ -166,6 +166,7 @@ if (NODE_ENV === 'development') {
           drop_console: true,
         },
       },
+      extractComments: false, // 不提取任何注释
     })
   )
 }
