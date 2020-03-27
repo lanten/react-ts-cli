@@ -7,7 +7,7 @@ import { exConsole } from '../utils'
 import webpackConfig from '../webpack.config'
 import { reactTsConfig } from '../config'
 
-const { port, proxy, env, host: devHost, projectName } = reactTsConfig
+const { port, proxy, env, host: devHost, projectName, devPublicPath } = reactTsConfig
 
 process.env.NODE_ENV = 'development'
 
@@ -24,12 +24,10 @@ for (const key in proxy) {
 }
 
 const host = devHost || address.ip() || '0.0.0.0'
-const publicPath = env.dev.publicPath
-
 const devServerOptions: WebpackDevServer.Configuration = {
   host,
   proxy,
-  publicPath,
+  publicPath: devPublicPath,
   hot: true,
   noInfo: true,
   clientLogLevel: 'warn',
