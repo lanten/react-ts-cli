@@ -41,20 +41,23 @@ function startRenderer(): Promise<webpack.Stats> {
     process.env.port = String(port)
     process.env.host = host
 
-    const hotClient = ['webpack-dev-server/client', 'webpack/hot/only-dev-server']
-    if (typeof webpackConfig.entry === 'object') {
-      Object.keys(webpackConfig.entry).forEach((name) => {
-        if (!webpackConfig.entry) throw new Error('webpackConfig.entry')
-        const value = webpackConfig.entry[name]
-        if (Array.isArray(value)) {
-          value.unshift(...hotClient)
-        } else {
-          webpackConfig.entry[name] = [...hotClient, value]
-        }
-      })
-    } else {
-      webpackConfig.entry = [...hotClient, webpackConfig.entry] as string[]
+    if (devServerOptions.hot) {
+      const hotClient = ['webpack-dev-server/client', 'webpack/hot/only-dev-server']
+      if (typeof webpackConfig.entry === 'object') {
+        Object.keys(webpackConfig.entry).forEach((name) => {
+          if (!webpackConfig.entry) throw new Error('webpackConfig.entry')
+          const value = webpackConfig.entry[name]
+          if (Array.isArray(value)) {
+            value.unshift(...hotClient)
+          } else {
+            webpackConfig.entry[name] = [...hotClient, value]
+          }
+        })
+      } else {
+        webpackConfig.entry = [...hotClient, webpackConfig.entry] as string[]
+      }
     }
+
     WebpackDevServer.addDevServerEntrypoints(webpackConfig as Configuration, devServerOptions)
 
     webpackConfig.devtool = 'source-map'

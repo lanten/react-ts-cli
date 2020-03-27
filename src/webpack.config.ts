@@ -39,7 +39,10 @@ const tsLoader: webpack.RuleSetUseItem = {
 
 const styleLoader = [{ loader: 'css-loader' }, { loader: 'postcss-loader', options: postcssOptions }]
 if (NODE_ENV === 'development') {
-  styleLoader.unshift({ loader: 'css-hot-loader' }, { loader: 'style-loader' })
+  styleLoader.unshift({ loader: 'style-loader' })
+  if (devServerOptions?.hot) {
+    styleLoader.unshift({ loader: 'css-hot-loader' })
+  }
 } else {
   styleLoader.unshift({ loader: MiniCssExtractPlugin.loader })
 }
@@ -148,7 +151,11 @@ let webpackConfig: Configuration = {
 if (NODE_ENV === 'development') {
   webpackConfig.devtool = 'source-map'
 
-  webpackConfig.plugins?.push(new webpack.HotModuleReplacementPlugin(), new webpack.NoEmitOnErrorsPlugin())
+  webpackConfig.plugins?.push(new webpack.NoEmitOnErrorsPlugin())
+
+  if (devServerOptions?.hot) {
+    webpackConfig.plugins?.push(new webpack.HotModuleReplacementPlugin())
+  }
 
   // 生产环境配置
 } else if (NODE_ENV === 'production') {
