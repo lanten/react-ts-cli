@@ -20,6 +20,7 @@ const {
   entry,
   afterWebpackConfig,
   postcssOptions,
+  terserOptions,
 } = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 const ENV_CONFIG = env[BUILD_ENV]
@@ -172,6 +173,7 @@ if (NODE_ENV === 'development') {
         },
       },
       extractComments: false, // 不提取任何注释
+      ...terserOptions,
     })
   )
 }
