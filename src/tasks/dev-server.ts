@@ -65,7 +65,6 @@ function startRenderer(): Promise<webpack.Stats> {
 
       const localUrl = path.join(`${host}:${port}`, publicPath)
       const ipUrl = path.join(`${address.ip()}:${port}`, publicPath)
-      console.log({ localUrl, ipUrl })
       exConsole.success(`Dev Server started. (${chalk.yellow(`${projectName}-${BUILD_ENV}`)})`)
       exConsole.info(`${chalk.dim('[ LOCAL ]')}: ${chalk.magenta.underline(`http://${localUrl}`)}`)
       exConsole.info(`${chalk.dim('[ IP    ]')}: ${chalk.magenta.underline(`http://${ipUrl}`)}`)
