@@ -1,4 +1,5 @@
 import { Configuration } from 'webpack'
+import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
 
 export declare interface EnvVariables {
   /** 项目名称 */
@@ -31,8 +32,8 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   dist: string
   /** 本地 host, 需要手动修改 默认: localhost */
   host: string
-  /** dev-server 中使用的 publicPath 默认: / */
-  devPublicPath: string
+  /** webpack-dev-server 相关配置 */
+  devServerOptions?: DevServerConfiguration
   /** 注入到 html 模板中的变量 */
   htmlConfig: any
   /** 路径别名 默认 */

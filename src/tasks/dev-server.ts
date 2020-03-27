@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import path from 'path'
 import webpack from 'webpack'
 import address from 'address'
 import WebpackDevServer, { Configuration } from 'webpack-dev-server'
@@ -7,7 +8,7 @@ import { exConsole } from '../utils'
 import webpackConfig from '../webpack.config'
 import { reactTsConfig } from '../config'
 
-const { port, proxy, env, host: devHost, projectName, devPublicPath } = reactTsConfig
+const { port, proxy, host: devHost, projectName, devServerOptions: devServerOptionsUser } = reactTsConfig
 
 process.env.NODE_ENV = 'development'
 
@@ -27,12 +28,12 @@ const host = devHost || address.ip() || '0.0.0.0'
 const devServerOptions: WebpackDevServer.Configuration = {
   host,
   proxy,
-  publicPath: devPublicPath,
   hot: true,
   noInfo: true,
   clientLogLevel: 'warn',
   historyApiFallback: true,
   compress: true,
+  ...devServerOptionsUser,
 }
 
 function startRenderer(): Promise<webpack.Stats> {
@@ -60,9 +61,14 @@ function startRenderer(): Promise<webpack.Stats> {
 
     const rendererCompiler = webpack(webpackConfig)
     rendererCompiler.hooks.done.tap('done', (stats) => {
+      const { publicPath = '' } = devServerOptions
+
+      const localUrl = path.join(`${host}:${port}`, publicPath)
+      const ipUrl = path.join(`${address.ip()}:${port}`, publicPath)
+      console.log({ localUrl, ipUrl })
       exConsole.success(`Dev Server started. (${chalk.yellow(`${projectName}-${BUILD_ENV}`)})`)
-      exConsole.info(`${chalk.dim('[ LOCAL ]')}: ${chalk.magenta.underline(`http://${host}:${port}`)}`)
-      exConsole.info(`${chalk.dim('[ IP    ]')}: ${chalk.magenta.underline(`http://${address.ip()}:${port}`)}`)
+      exConsole.info(`${chalk.dim('[ LOCAL ]')}: ${chalk.magenta.underline(`http://${localUrl}`)}`)
+      exConsole.info(`${chalk.dim('[ IP    ]')}: ${chalk.magenta.underline(`http://${ipUrl}`)}`)
       resolve(stats)
     })
 

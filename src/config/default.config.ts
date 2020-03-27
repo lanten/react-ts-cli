@@ -14,7 +14,9 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
     htmlTemplate: path.resolve(rootPath, 'src/index.html'),
     dist: path.resolve(rootPath, 'dist'),
     host: '0.0.0.0',
-    devPublicPath: '/',
+    devServerOptions: {
+      publicPath: '/',
+    },
     htmlConfig: {
       title: `${projectTitle}`,
       lang: 'zh-CN',

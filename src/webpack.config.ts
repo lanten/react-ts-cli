@@ -16,7 +16,7 @@ const {
   env,
   htmlConfig,
   COMMON_ENV,
-  devPublicPath,
+  devServerOptions,
   entry,
   afterWebpackConfig,
   postcssOptions,
@@ -56,7 +56,7 @@ let webpackConfig: Configuration = {
   },
 
   output: {
-    publicPath: NODE_ENV === 'development' ? devPublicPath : ENV_CONFIG.publicPath,
+    publicPath: NODE_ENV === 'development' ? devServerOptions?.publicPath : ENV_CONFIG.publicPath,
     path: dist,
     filename: 'js/[name].[hash:7].js',
     chunkFilename: 'js/[name].[chunkhash:7].js',
