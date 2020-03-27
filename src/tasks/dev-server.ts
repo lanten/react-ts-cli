@@ -41,22 +41,22 @@ function startRenderer(): Promise<webpack.Stats> {
     process.env.port = String(port)
     process.env.host = host
 
-    if (devServerOptions.hot) {
-      const hotClient = ['webpack-dev-server/client', 'webpack/hot/only-dev-server']
-      if (typeof webpackConfig.entry === 'object') {
-        Object.keys(webpackConfig.entry).forEach((name) => {
-          if (!webpackConfig.entry) throw new Error('webpackConfig.entry')
-          const value = webpackConfig.entry[name]
-          if (Array.isArray(value)) {
-            value.unshift(...hotClient)
-          } else {
-            webpackConfig.entry[name] = [...hotClient, value]
-          }
-        })
-      } else {
-        webpackConfig.entry = [...hotClient, webpackConfig.entry] as string[]
-      }
-    }
+    // if (devServerOptions.hot) {
+    //   const hotClient = ['webpack-dev-server/client', 'webpack/hot/only-dev-server']
+    //   if (typeof webpackConfig.entry === 'object') {
+    //     Object.keys(webpackConfig.entry).forEach((name) => {
+    //       if (!webpackConfig.entry) throw new Error('webpackConfig.entry')
+    //       const value = webpackConfig.entry[name]
+    //       if (Array.isArray(value)) {
+    //         value.unshift(...hotClient)
+    //       } else {
+    //         webpackConfig.entry[name] = [...hotClient, value]
+    //       }
+    //     })
+    //   } else {
+    //     webpackConfig.entry = [...hotClient, webpackConfig.entry] as string[]
+    //   }
+    // }
 
     WebpackDevServer.addDevServerEntrypoints(webpackConfig as Configuration, devServerOptions)
 
@@ -69,8 +69,8 @@ function startRenderer(): Promise<webpack.Stats> {
       const localUrl = path.join(`${host}:${port}`, publicPath)
       const ipUrl = path.join(`${address.ip()}:${port}`, publicPath)
       exConsole.success(`Dev Server started. (${chalk.yellow(`${projectName}-${BUILD_ENV}`)})`)
-      exConsole.info(`${chalk.dim('[ LOCAL ]')}: ${chalk.magenta.underline(`http://${localUrl}`)}`)
-      exConsole.info(`${chalk.dim('[ IP    ]')}: ${chalk.magenta.underline(`http://${ipUrl}`)}`)
+      exConsole.info(`${chalk.dim('[ HOST ]')}: ${chalk.magenta.underline(`http://${localUrl}`)}`)
+      exConsole.info(`${chalk.dim('[ IP   ]')}: ${chalk.magenta.underline(`http://${ipUrl}`)}`)
       resolve(stats)
     })
 

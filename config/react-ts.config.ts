@@ -3,6 +3,7 @@ import { ReactTsConfig } from '../types'
 
 const config: Partial<ReactTsConfig> = {
   projectName: 'demo',
+  port: 18000,
 
   dist: path.resolve(process.cwd(), 'demo-dist'),
   devServerOptions: {
