@@ -21,6 +21,7 @@ const {
   afterWebpackConfig,
   postcssOptions,
   terserOptions,
+  htmlOptions,
 } = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 const ENV_CONFIG = env[BUILD_ENV]
@@ -136,6 +137,7 @@ let webpackConfig: Configuration = {
       template: htmlTemplate,
       filename: 'index.html',
       templateParameters: htmlConfig,
+      ...htmlOptions,
     }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[hash:7].css',

@@ -1,7 +1,7 @@
 import { Configuration } from 'webpack'
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
 import { TerserPluginOptions } from 'terser-webpack-plugin'
-
+import { Options as HtmlOptions } from 'html-webpack-plugin'
 export declare interface EnvVariables {
   /** 项目名称 */
   PROJECT_NAME?: string
@@ -75,6 +75,7 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   }
 
   terserOptions?: TerserPluginOptions
+  htmlOptions?: HtmlOptions
 }
 
 export type ReactTsConfigPartial<T = EnvVariables> = Partial<ReactTsConfig<T>>
