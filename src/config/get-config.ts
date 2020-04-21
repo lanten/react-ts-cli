@@ -17,6 +17,11 @@ exConsole.info(chalk.cyanBright('Config Compiling...'))
 //   msg: 'Config compile',
 // })
 
+// syncExec({
+//   bash: `rm -rf ${outPath}`,
+//   msg: 'Config clear',
+// })
+
 syncExec({
   bash: `tsc -p ${inputPath} --outDir ${outPath}`,
   msg: 'Config compile',
