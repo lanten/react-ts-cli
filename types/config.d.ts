@@ -80,8 +80,8 @@ export declare interface ReactTsConfig<V = EnvVariables> {
 
 export type ReactTsConfigPartial<T = EnvVariables> = Partial<ReactTsConfig<T>>
 
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv extends EnvVariables {}
-  }
-}
+// declare global {
+//   namespace NodeJS {
+//     interface ProcessEnv extends EnvVariables {}
+//   }
+// }
