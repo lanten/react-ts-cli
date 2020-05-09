@@ -52,16 +52,6 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
         variables: {},
       },
 
-      daily: {
-        publicPath: '',
-        variables: {},
-      },
-
-      gray: {
-        publicPath: '',
-        variables: {},
-      },
-
       prod: {
         publicPath: '',
         variables: {},
