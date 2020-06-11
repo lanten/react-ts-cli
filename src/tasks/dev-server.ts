@@ -2,6 +2,7 @@ import chalk from 'chalk'
 import path from 'path'
 import webpack from 'webpack'
 import address from 'address'
+import defaultGateway from 'default-gateway'
 import WebpackDevServer, { Configuration } from 'webpack-dev-server'
 
 import { exConsole } from '../utils'
@@ -11,8 +12,10 @@ import { reactTsConfig } from '../config'
 const { port, proxy, host: devHost, projectName, devServerOptions: devServerOptionsUser } = reactTsConfig
 
 process.env.NODE_ENV = 'development'
-
 const { BUILD_ENV = 'dev' } = process.env
+
+const gatewayResult = defaultGateway.v4.sync()
+const ip = address.ip(gatewayResult && gatewayResult.interface)
 
 for (const key in proxy) {
   const val = proxy[key]
@@ -24,7 +27,7 @@ for (const key in proxy) {
   })
 }
 
-const host = devHost || address.ip() || '0.0.0.0'
+const host = devHost || ip || '0.0.0.0'
 const devServerOptions: WebpackDevServer.Configuration = {
   host,
   proxy,
@@ -67,7 +70,7 @@ function startRenderer(): Promise<webpack.Stats> {
       const { publicPath = '' } = devServerOptions
 
       const localUrl = path.join(`${host}:${port}`, publicPath)
-      const ipUrl = path.join(`${address.ip()}:${port}`, publicPath)
+      const ipUrl = path.join(`${ip}:${port}`, publicPath)
       exConsole.success(`Dev Server started. (${chalk.yellow(`${projectName}-${BUILD_ENV}`)})`)
       exConsole.info(`${chalk.dim('[ HOST ]')}: ${chalk.magenta.underline(`http://${localUrl}`)}`)
       exConsole.info(`${chalk.dim('[ IP   ]')}: ${chalk.magenta.underline(`http://${ipUrl}`)}`)

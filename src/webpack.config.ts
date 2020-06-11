@@ -82,7 +82,9 @@ let webpackConfig: Configuration = {
           {
             loader: 'less-loader',
             options: {
-              javascriptEnabled: true,
+              lessOptions: {
+                javascriptEnabled: true,
+              },
             },
           },
         ],
@@ -155,7 +157,7 @@ if (NODE_ENV === 'development') {
 
   // 生产环境配置
 } else if (NODE_ENV === 'production') {
-  webpackConfig.plugins?.push(new OptimizeCSSAssetsPlugin() as webpack.Plugin)
+  webpackConfig.plugins?.push(new OptimizeCSSAssetsPlugin() as any)
 
   webpackConfig.optimization?.minimizer?.push(
     // https://github.com/terser-js/terser
