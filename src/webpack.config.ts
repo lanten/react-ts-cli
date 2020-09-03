@@ -157,7 +157,11 @@ if (NODE_ENV === 'development') {
 
   // 生产环境配置
 } else if (NODE_ENV === 'production') {
-  webpackConfig.plugins?.push(new OptimizeCSSAssetsPlugin() as any)
+  webpackConfig.plugins?.push(
+    new OptimizeCSSAssetsPlugin({
+      cssProcessorPluginOptions: { preset: ['default', { minifyFontValues: { removeQuotes: false } }] },
+    }) as any
+  )
 
   webpackConfig.optimization?.minimizer?.push(
     // https://github.com/terser-js/terser
