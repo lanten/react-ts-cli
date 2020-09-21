@@ -16,6 +16,7 @@ const { BUILD_ENV = 'dev' } = process.env
 
 const gatewayResult = defaultGateway.v4.sync()
 const ip = address.ip(gatewayResult && gatewayResult.interface)
+const protocol = devServerOptionsUser?.https ? 'https' : 'http'
 
 for (const key in proxy) {
   const val = proxy[key]
@@ -72,8 +73,8 @@ function startRenderer(): Promise<webpack.Stats> {
       const localUrl = path.join(`${host}:${port}`, publicPath)
       const ipUrl = path.join(`${ip}:${port}`, publicPath)
       exConsole.success(`Dev Server started. (${chalk.yellow(`${projectName}-${BUILD_ENV}`)})`)
-      exConsole.info(`${chalk.dim('[ HOST ]')}: ${chalk.magenta.underline(`http://${localUrl}`)}`)
-      exConsole.info(`${chalk.dim('[ IP   ]')}: ${chalk.magenta.underline(`http://${ipUrl}`)}`)
+      exConsole.info(`${chalk.dim('[ HOST ]')}: ${chalk.magenta.underline(`${protocol}://${localUrl}`)}`)
+      exConsole.info(`${chalk.dim('[ IP   ]')}: ${chalk.magenta.underline(`${protocol}://${ipUrl}`)}`)
       resolve(stats)
     })
 
