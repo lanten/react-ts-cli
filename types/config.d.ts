@@ -60,15 +60,15 @@ export declare interface ReactTsConfig<V = EnvVariables> {
     /**	Enable PostCSS Parser support in CSS-in-JS */
     exec?: boolean
     /** Set PostCSS Parser */
-    parser?: string | object
+    parser?: string | Record<string, unknown>
     /** Set PostCSS Syntax */
-    syntax?: string | object
+    syntax?: string | Record<string, unknown>
     /** Set PostCSS Stringifier */
-    stringifier?: string | object
+    stringifier?: string | Record<string, unknown>
     /** Set postcss.config.js config path && ctx */
-    config?: object
+    config?: Record<string, unknown>
     /** Set PostCSS Plugins */
-    plugins?: any[] | Function
+    plugins?: any[] | any
     /** Enable Source Maps */
     sourceMap?: string | boolean
     ident?: string

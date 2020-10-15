@@ -30,7 +30,7 @@ const tsLoader: webpack.RuleSetUseItem = {
   loader: 'ts-loader',
   options: {
     transpileOnly: true,
-    getCustomTransformers: () => ({
+    getCustomTransformers: (): any => ({
       before: [tsImportPluginFactory(/** options */)],
     }),
     compilerOptions: {
@@ -165,17 +165,7 @@ if (NODE_ENV === 'development') {
 
   webpackConfig.optimization?.minimizer?.push(
     // https://github.com/terser-js/terser
-    new TerserPlugin({
-      terserOptions: {
-        compress: {
-          warnings: true,
-          /* eslint-disable */
-          drop_console: true,
-        },
-      },
-      extractComments: false, // 不提取任何注释
-      ...terserOptions,
-    })
+    new TerserPlugin(terserOptions)
   )
 }
 

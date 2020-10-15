@@ -14,14 +14,28 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
     htmlTemplate: path.resolve(rootPath, 'src/index.html'),
     dist: path.resolve(rootPath, 'dist'),
     host: '0.0.0.0',
+
     devServerOptions: {
       publicPath: '/',
     },
+
+    terserOptions: {
+      terserOptions: {
+        compress: {
+          // warnings: false,
+          // drop_console: true,
+          pure_funcs: ['console.log'],
+        },
+      },
+      extractComments: false, // 不提取任何注释
+    },
+
     htmlConfig: {
       title: `${projectTitle}`,
       lang: 'zh-CN',
       keywords: `${projectTitle}`,
     },
+
     alias: {
       '@': path.resolve(rootPath, 'src'),
     },
