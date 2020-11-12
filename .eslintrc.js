@@ -63,5 +63,6 @@ module.exports = {
     '@typescript-eslint/no-inferrable-types': 0,
     '@typescript-eslint/no-namespace': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
+    '@typescript-eslint/ban-ts-comment': 0,
   },
 }
