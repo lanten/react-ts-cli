@@ -69,7 +69,7 @@ chestnut:
 }
 ```
 
-项目更目录需要添加 `tsconfig.json` 文件.
+项目根目录需要添加 `tsconfig.json` 文件.
 
 此外,请按需添加 `.eslintignore`, `.eslintrc.js`, `.browserslistrc` 文件.
 
@@ -93,5 +93,15 @@ react-ts-build
 react-ts-dev MY_ENV=xxx
 react-ts-build MY_ENV=xxx
 ```
+
+## 默认配置
+
+在 [config.d.ts](./types/config.d.ts) 中查看全部默认配置
+
+- 在生产环境中默认移除了 `console.log`, 可以在 `terserOptions` 中修改
+- `@` 是 `src` 的别名
+- 默认入口文件: `src/main.ts`
+- 默认环境区分: `mock` | `dev` | `prod`
+
 
 ---

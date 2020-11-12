@@ -2,7 +2,7 @@
 .history
 node_modules
 dist
-demo-dist
+test-project
 
 # local env files
 .env.local

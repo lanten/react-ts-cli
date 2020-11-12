@@ -60,7 +60,7 @@ let webpackConfig: Configuration = {
   output: {
     publicPath: NODE_ENV === 'development' ? devServerOptions?.publicPath : ENV_CONFIG.publicPath,
     path: dist,
-    filename: 'js/[name].[hash:7].js',
+    filename: 'js/[name].[fullhash:7].js',
     chunkFilename: 'js/[name].[chunkhash:7].js',
   },
 
@@ -68,11 +68,11 @@ let webpackConfig: Configuration = {
     rules: [
       {
         test: /(?<!\.d)\.tsx?$/,
-        loader: [tsLoader, 'eslint-loader'],
+        use: [tsLoader, { loader: 'eslint-loader' }],
       },
       {
         test: /\.jsx?$/,
-        loader: [tsLoader, 'eslint-loader'],
+        use: [tsLoader, { loader: 'eslint-loader' }],
         exclude: /node_modules/,
       },
       {
@@ -108,7 +108,7 @@ let webpackConfig: Configuration = {
         options: {
           outputPath: 'assets',
           esModule: false,
-          name: '[name]-[hash:7].[ext]',
+          name: '[name]-[fullhash:7].[ext]',
         },
       },
     ],
@@ -134,7 +134,7 @@ let webpackConfig: Configuration = {
         return defines
       })()
     ),
-    new Webpackbar(),
+    new Webpackbar({}),
     new htmlWebpackPlugin({
       template: htmlTemplate,
       filename: 'index.html',
@@ -142,11 +142,11 @@ let webpackConfig: Configuration = {
       ...htmlOptions,
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[hash:7].css',
+      filename: 'css/[name].[fullhash:7].css',
       chunkFilename: 'css/[name].[chunkhash:7].css',
     }),
     new webpack.ProvidePlugin(provide),
-  ] as webpack.Plugin[],
+  ] as webpack.WebpackPluginInstance[],
 }
 
 // 开发环境配置

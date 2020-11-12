@@ -62,5 +62,6 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 0,
     '@typescript-eslint/no-inferrable-types': 0,
     '@typescript-eslint/no-namespace': 0,
+    '@typescript-eslint/explicit-module-boundary-types': 0,
   },
 }

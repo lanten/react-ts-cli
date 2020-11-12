@@ -2,6 +2,7 @@ import { Configuration } from 'webpack'
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
 import { TerserPluginOptions } from 'terser-webpack-plugin'
 import { Options as HtmlOptions } from 'html-webpack-plugin'
+
 export declare interface EnvVariables {
   /** 项目名称 */
   PROJECT_NAME?: string
@@ -57,21 +58,28 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   }
   /** postcss 相关配置 */
   postcssOptions: {
-    /**	Enable PostCSS Parser support in CSS-in-JS */
-    exec?: boolean
-    /** Set PostCSS Parser */
-    parser?: string | Record<string, unknown>
-    /** Set PostCSS Syntax */
-    syntax?: string | Record<string, unknown>
-    /** Set PostCSS Stringifier */
-    stringifier?: string | Record<string, unknown>
-    /** Set postcss.config.js config path && ctx */
-    config?: Record<string, unknown>
-    /** Set PostCSS Plugins */
-    plugins?: any[] | any
-    /** Enable Source Maps */
-    sourceMap?: string | boolean
-    ident?: string
+    /** Enable PostCSS Parser support in CSS-in-JS */
+    execute?: boolean
+    sourceMap?: boolean
+    postcssOptions?:
+      | ({
+          /**	Enable PostCSS Parser support in CSS-in-JS */
+          exec?: boolean
+          /** Set PostCSS Parser */
+          parser?: string | Record<string, unknown>
+          /** Set PostCSS Syntax */
+          syntax?: string | Record<string, unknown>
+          /** Set PostCSS Stringifier */
+          stringifier?: string | Record<string, unknown>
+          /** Set postcss.config.js config path && ctx */
+          config?: Record<string, unknown>
+          /** Set PostCSS Plugins */
+          plugins?: any[] | any
+          /** Enable Source Maps */
+          sourceMap?: string | boolean
+          ident?: string
+        } & any)
+      | (() => any)
   }
 
   terserOptions?: TerserPluginOptions

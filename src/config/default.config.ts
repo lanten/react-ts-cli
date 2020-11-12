@@ -13,17 +13,17 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
     entry: path.resolve(rootPath, 'src/index.ts'),
     htmlTemplate: path.resolve(rootPath, 'src/index.html'),
     dist: path.resolve(rootPath, 'dist'),
-    host: '0.0.0.0',
+    host: 'localhost',
 
     devServerOptions: {
       publicPath: '/',
+      disableHostCheck: true,
     },
 
     terserOptions: {
       terserOptions: {
         compress: {
-          // warnings: false,
-          // drop_console: true,
+          // 生产环境移除 log
           pure_funcs: ['console.log'],
         },
       },
@@ -50,10 +50,7 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
       API_BASE: '',
     },
 
-    postcssOptions: {
-      ident: 'postcss',
-      plugins: [require('autoprefixer')()],
-    },
+    postcssOptions: {},
 
     env: {
       mock: {

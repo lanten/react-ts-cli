@@ -16,6 +16,10 @@ function build({ env, webpackConfig }: BuildConfig): Promise<any> {
         throw err
       }
 
+      if (!stats) {
+        throw `Webpack stats error: ${stats}`
+      }
+
       process.stdout.write(
         stats.toString({
           colors: true,
