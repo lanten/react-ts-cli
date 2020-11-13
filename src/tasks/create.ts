@@ -4,27 +4,43 @@ import path from 'path'
 
 const packageJSON = require(path.resolve(__dirname, '../../package.json'))
 
-interface CreateConfig {
-  /** 项目名称 */
-  projectName: string
-  /** 项目标题 */
-  projectTitle: string
+/** 预装功能 */
+export type PreInstalls =
   /** 是否集成 Redux ($store) */
-  useRedux: boolean
+  | 'useRedux'
   /** 是否启用集中管理网络请求 ($api) */
-  useCentralizedAPI: boolean
+  | 'useCentralizedAPI'
   /** 是否启用全局工具模块 ($tools) */
-  useGlobalTools: boolean
-  /** 是否集成 Ant-Design 及定制主体配置 (将强制启用 less) */
-  useAntd: boolean
+  | 'useGlobalTools'
   /** 是否集成 react-router 及相关路由模块 */
-  useReactRouter: boolean
-  /** 是否集成 .vscode 工作区设置及插件依赖 */
-  useVscodeWorkspaceConfig: boolean
+  | 'useReactRouter'
+  /** 是否集成 Ant-Design 及定制主体配置 (将强制启用 less) */
+  | 'useAntd'
 
+/** 集成 css 预处理器 */
+export type StyleHandlers = 'less' | 'scss' | 'none'
+
+/** 采集用户配置 */
+export interface CreateConfig {
+  /** 项目名称 */
+  PROJECT_NAME: string
+  /** 项目标题 */
+  PROJECT_TITLE: string
+  /** 预装功能 */
+  preInstalls: PreInstalls[]
   /** 集成 css 预处理器 */
-  useStyleHandler: 'less' | 'scss' | 'none'
+  styleHandler: StyleHandlers
 }
+
+/** 映射到模板中的配置 */
+export interface TemplateConfig extends CreateConfig {
+  /** cli 包名 */
+  CLI_PACKAGE_NAME: string
+}
+
+checkBaseInfo().then(() => {
+  getCreateConfig()
+})
 
 /** 必填项验证 */
 function requiredValidate(input: string) {
@@ -35,15 +51,48 @@ function requiredValidate(input: string) {
   }
 }
 
-async function getUserConfig() {
+/** 询问表单 */
+async function getCreateConfig() {
   return inquirer
     .prompt<CreateConfig>([
-      { type: 'input', name: 'projectName', message: '项目名称', validate: requiredValidate },
-      { type: 'input', name: 'projectTitle', message: '项目标题', validate: requiredValidate },
-      { type: 'confirm', name: 'useRedux', message: '是否集成 Redux', validate: requiredValidate },
+      { type: 'input', name: 'PROJECT_NAME', message: '项目名称', validate: requiredValidate },
+      {
+        type: 'input',
+        name: 'PROJECT_TITLE',
+        message: '项目标题',
+        default: (e: CreateConfig) => e.PROJECT_NAME,
+        validate: requiredValidate,
+      },
+      {
+        type: 'checkbox',
+        name: 'preInstalls',
+        message: '选择需要预装的功能',
+        default: ['useRedux', 'useCentralizedAPI', 'useGlobalTools', 'useReactRouter'] as PreInstalls[],
+        choices: [
+          { value: 'useRedux', name: '集成 Redux ($store)' },
+          { value: 'useCentralizedAPI', name: '启用集中管理网络请求 ($api)' },
+          { value: 'useGlobalTools', name: '启用全局工具模块 ($tools)' },
+          { value: 'useReactRouter', name: '集成 react-router 及相关路由模块' },
+          { value: 'useAntd', name: '集成 Ant-Design 及定制主体配置 (将强制启用 less)' },
+        ] as {
+          value: PreInstalls
+          name: string
+        }[],
+      },
+      {
+        type: 'list',
+        name: 'styleHandler',
+        message: '选择 css 预处理器',
+        default: 'none' as StyleHandlers,
+        choices: [{ value: 'less' }, { value: 'scss' }, { value: 'none' }] as { value: StyleHandlers }[],
+        when: (e) => !e.preInstalls.includes('useAntd'),
+      },
     ])
     .then((res) => {
-      console.log(res)
+      if (res.preInstalls.includes('useAntd')) {
+        res.styleHandler = 'less'
+      }
+      createTemplate(res)
       return res
     })
     .catch((error) => {
@@ -79,6 +128,7 @@ async function checkBaseInfo() {
   })
 }
 
-checkBaseInfo().then(() => {
-  getUserConfig()
-})
+/** 创建模板项目 */
+function createTemplate(conf: CreateConfig) {
+  console.log(conf)
+}
