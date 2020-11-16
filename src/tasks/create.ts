@@ -103,7 +103,7 @@ async function getCreateConfig() {
 /** 确认基本信息 */
 async function checkBaseInfo() {
   const renderText = (text: string, color = '#FE8D00') => chalk.hex(color)(text)
-  const splitLine = chalk.yellow('***************************************************')
+  const splitLine = chalk.yellow('*'.repeat(50))
 
   const startToolTips = [
     splitLine,
