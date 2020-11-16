@@ -7,15 +7,15 @@ const packageJSON = require(path.resolve(__dirname, '../../package.json'))
 /** 预装功能 */
 export type PreInstalls =
   /** 是否集成 Redux ($store) */
-  | 'useRedux'
-  /** 是否启用集中管理网络请求 ($api) */
-  | 'useCentralizedAPI'
+  | 'USE_REDUX'
+  /** 是否启用集中管理 HTTP 请求 ($api) */
+  | 'USE_CENTRALIZED_API'
   /** 是否启用全局工具模块 ($tools) */
-  | 'useGlobalTools'
+  | 'USE_GLOBAL_TOOLS'
   /** 是否集成 react-router 及相关路由模块 */
-  | 'useReactRouter'
+  | 'USE_REACT_ROUTER'
   /** 是否集成 Ant-Design 及定制主体配置 (将强制启用 less) */
-  | 'useAntd'
+  | 'USE_ANTD'
 
 /** 集成 css 预处理器 */
 export type StyleHandlers = 'less' | 'scss' | 'none'
@@ -67,13 +67,13 @@ async function getCreateConfig() {
         type: 'checkbox',
         name: 'preInstalls',
         message: '选择需要预装的功能',
-        default: ['useRedux', 'useCentralizedAPI', 'useGlobalTools', 'useReactRouter'] as PreInstalls[],
+        default: ['USE_REDUX', 'USE_CENTRALIZED_API', 'USE_GLOBAL_TOOLS', 'USE_REACT_ROUTER'] as PreInstalls[],
         choices: [
-          { value: 'useRedux', name: '集成 Redux ($store)' },
-          { value: 'useCentralizedAPI', name: '启用集中管理网络请求 ($api)' },
-          { value: 'useGlobalTools', name: '启用全局工具模块 ($tools)' },
-          { value: 'useReactRouter', name: '集成 react-router 及相关路由模块' },
-          { value: 'useAntd', name: '集成 Ant-Design 及定制主体配置 (将强制启用 less)' },
+          { value: 'USE_REDUX', name: '集成 Redux ($store)' },
+          { value: 'USE_CENTRALIZED_API', name: '启用集中管理 HTTP 请求 ($api)' },
+          { value: 'USE_GLOBAL_TOOLS', name: '启用全局工具模块 ($tools)' },
+          { value: 'USE_REACT_ROUTER', name: '集成 react-router 及相关路由模块' },
+          { value: 'USE_ANTD', name: '集成 Ant-Design 及定制主体配置 (将强制启用 less)' },
         ] as {
           value: PreInstalls
           name: string
@@ -85,11 +85,11 @@ async function getCreateConfig() {
         message: '选择 css 预处理器',
         default: 'none' as StyleHandlers,
         choices: [{ value: 'less' }, { value: 'scss' }, { value: 'none' }] as { value: StyleHandlers }[],
-        when: (e) => !e.preInstalls.includes('useAntd'),
+        when: (e) => !e.preInstalls.includes('USE_ANTD'),
       },
     ])
     .then((res) => {
-      if (res.preInstalls.includes('useAntd')) {
+      if (res.preInstalls.includes('USE_ANTD')) {
         res.styleHandler = 'less'
       }
       createTemplate(res)
