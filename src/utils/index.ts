@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { execSync } from 'child_process'
 
 import { exConsole } from './console'
 export * from './console'
@@ -60,4 +61,26 @@ export function fixedStringLength(n: number | string, p?: number, r = '0'): stri
   }
 
   return str
+}
+
+/**
+ * 同步执行命令
+ * @param paramsSrc
+ */
+export function syncExec(paramsSrc: { bash: string; msg?: string; inputPath?: string }): string {
+  let params = paramsSrc
+  if (typeof params === 'string') params = { bash: params }
+
+  const { bash, msg, inputPath } = params
+
+  try {
+    const res = execSync(bash, {
+      cwd: inputPath,
+    }).toString()
+    if (msg) exConsole.success(`${msg}: successfully.`)
+    return res.toString()
+  } catch (ex) {
+    if (msg) exConsole.error(`${msg}: failed.\n ${ex}`)
+    return ex.toString()
+  }
 }

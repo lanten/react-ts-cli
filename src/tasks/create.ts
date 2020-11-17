@@ -1,6 +1,9 @@
 import inquirer from 'inquirer'
 import chalk from 'chalk'
 import path from 'path'
+import fs from 'fs'
+
+import { exConsole, syncExec } from '../utils'
 
 const packageJSON = require(path.resolve(__dirname, '../../package.json'))
 
@@ -33,13 +36,46 @@ export interface CreateConfig {
 }
 
 /** 映射到模板中的配置 */
-export interface TemplateConfig extends CreateConfig {
+export interface TemplateConfig extends Pick<CreateConfig, 'PROJECT_NAME' | 'PROJECT_TITLE'> {
   /** cli 包名 */
   CLI_PACKAGE_NAME: string
+  /** 是否集成 Redux ($store) */
+  USE_REDUX?: 0 | 1
+  /** 是否启用集中管理 HTTP 请求 ($api) */
+  USE_CENTRALIZED_API?: 0 | 1
+  /** 是否启用全局工具模块 ($tools) */
+  USE_GLOBAL_TOOLS?: 0 | 1
+  /** 是否集成 react-router 及相关路由模块 */
+  USE_REACT_ROUTER?: 0 | 1
+  /** 是否集成 Ant-Design 及定制主体配置 (将强制启用 less) */
+  USE_ANTD?: 0 | 1
+  /** 使用 less */
+  USE_LESS?: 0 | 1
+  /** 使用 scss */
+  USE_SCSS?: 0 | 1
 }
 
-checkBaseInfo().then(() => {
-  getCreateConfig()
+// -------------------------------------------------------------------------
+
+// checkBaseInfo()
+//   .then(() => {
+//     getCreateConfig()
+//   })
+//   .catch((message) => {
+//     exConsole.warn(message || '配置异常!')
+//   })
+
+// test
+createTemplate({
+  CLI_PACKAGE_NAME: '@sbc-fe/react-ts-cli',
+  PROJECT_NAME: 'asd',
+  PROJECT_TITLE: 'asd',
+  USE_REDUX: 1,
+  USE_CENTRALIZED_API: 1,
+  USE_GLOBAL_TOOLS: 1,
+  USE_REACT_ROUTER: 1,
+  USE_ANTD: 1,
+  USE_LESS: 1,
 })
 
 /** 必填项验证 */
@@ -92,7 +128,28 @@ async function getCreateConfig() {
       if (res.preInstalls.includes('USE_ANTD')) {
         res.styleHandler = 'less'
       }
-      createTemplate(res)
+
+      const templateConfig: TemplateConfig = {
+        CLI_PACKAGE_NAME: packageJSON.name,
+        PROJECT_NAME: res.PROJECT_NAME,
+        PROJECT_TITLE: res.PROJECT_TITLE,
+      }
+
+      res.preInstalls.forEach((v) => {
+        templateConfig[v] = 1
+      })
+
+      switch (res.styleHandler) {
+        case 'less':
+          templateConfig.USE_LESS = 1
+          break
+
+        case 'scss':
+          templateConfig.USE_SCSS = 1
+          break
+      }
+
+      createTemplate(templateConfig)
       return res
     })
     .catch((error) => {
@@ -103,7 +160,7 @@ async function getCreateConfig() {
 /** 确认基本信息 */
 async function checkBaseInfo() {
   const renderText = (text: string, color = '#FE8D00') => chalk.hex(color)(text)
-  const splitLine = chalk.yellow('*'.repeat(50))
+  const splitLine = chalk.gray('-'.repeat(50))
 
   const startToolTips = [
     splitLine,
@@ -128,7 +185,30 @@ async function checkBaseInfo() {
   })
 }
 
+/** 获取创建目录 */
+function getCreatePath(name: string): string {
+  const bash = process.platform == 'win32' ? 'chdir' : 'pwd'
+  const runPath = syncExec({ bash }).trim()
+
+  if (!fs.existsSync(runPath)) {
+    exConsole.error('获取运行路径失败')
+    process.exit()
+  }
+
+  const createPath = path.resolve(runPath, name)
+
+  if (fs.existsSync(createPath)) {
+    exConsole.error(`文件夹: ${name} 已存在, 请更换项目名或删除文件夹后重试`)
+    process.exit()
+  }
+
+  return createPath
+}
+
 /** 创建模板项目 */
-function createTemplate(conf: CreateConfig) {
+function createTemplate(conf: TemplateConfig) {
+  const createPath = getCreatePath(conf.PROJECT_NAME)
+
   console.log(conf)
+  console.log(createPath)
 }
