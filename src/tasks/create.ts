@@ -208,7 +208,22 @@ function getCreatePath(name: string): string {
 /** 创建模板项目 */
 function createTemplate(conf: TemplateConfig) {
   const createPath = getCreatePath(conf.PROJECT_NAME)
+  const templatePath = path.resolve(__dirname, '../../react-ts-template')
 
-  console.log(conf)
-  console.log(createPath)
+  fs.mkdirSync(createPath)
+
+  const files = fs.readdirSync(templatePath)
+  // files.forEach((file) => {
+  //   const curPath = path.join(pathStr, file)
+
+  //   if (fs.statSync(curPath).isDirectory()) {
+  //     clearDir(curPath, true)
+  //     if (log) exConsole.success(`[delete dir]: ${curPath}`)
+  //   } else {
+  //     fs.unlinkSync(curPath)
+  //     if (log) exConsole.success(`[delete file]: ${curPath}`)
+  //   }
+  // })
+
+  console.log({ createPath, templatePath, files })
 }
