@@ -1,6 +1,7 @@
 import inquirer from 'inquirer'
 import chalk from 'chalk'
 import path from 'path'
+import { pathToRegexp, match } from 'path-to-regexp'
 import fs from 'fs'
 
 import { exConsole, syncExec } from '../utils'
@@ -53,6 +54,10 @@ export interface TemplateConfig extends Pick<CreateConfig, 'PROJECT_NAME' | 'PRO
   USE_LESS?: 0 | 1
   /** 使用 scss */
   USE_SCSS?: 0 | 1
+}
+
+export interface TemplateConfigJSON {
+  includes?: string[]
 }
 
 // -------------------------------------------------------------------------
@@ -210,20 +215,32 @@ function createTemplate(conf: TemplateConfig) {
   const createPath = getCreatePath(conf.PROJECT_NAME)
   const templatePath = path.resolve(__dirname, '../../react-ts-template')
 
-  fs.mkdirSync(createPath)
+  // fs.mkdirSync(createPath)
 
-  const files = fs.readdirSync(templatePath)
-  // files.forEach((file) => {
-  //   const curPath = path.join(pathStr, file)
+  const templateConfigJSON = require(path.resolve(templatePath, 'template.config.json'))
 
-  //   if (fs.statSync(curPath).isDirectory()) {
-  //     clearDir(curPath, true)
-  //     if (log) exConsole.success(`[delete dir]: ${curPath}`)
-  //   } else {
-  //     fs.unlinkSync(curPath)
-  //     if (log) exConsole.success(`[delete file]: ${curPath}`)
-  //   }
-  // })
+  handleTemplateFiles(templatePath, templateConfigJSON.includes)
 
-  console.log({ createPath, templatePath, files })
+  // console.log({ createPath, templatePath, templateConfigJSON })
 }
+
+function handleTemplateFiles(pathStr: string, includes?: TemplateConfigJSON['includes'] | true) {
+  if (!pathStr) return exConsole.warn('[clearDir]: Empty Path!')
+
+  const files = fs.readdirSync(pathStr)
+  console.log(files)
+  files.forEach((file) => {
+    if (includes && includes !== true && !includes.includes(file)) return
+
+    const curPath = path.resolve(pathStr, file)
+
+    if (fs.statSync(curPath).isDirectory()) {
+      console.log(curPath, '是文件夹')
+      handleTemplateFiles(curPath, true)
+    } else {
+      console.log(curPath, '是文件')
+    }
+  })
+}
+
+function copyTemplateFile(path: string) {}
