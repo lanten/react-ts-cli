@@ -165,7 +165,7 @@ if (NODE_ENV === 'development') {
 
   webpackConfig.optimization?.minimizer?.push(
     // https://github.com/terser-js/terser
-    new TerserPlugin(terserOptions)
+    (new TerserPlugin(terserOptions) as unknown) as webpack.WebpackPluginInstance
   )
 }
 
