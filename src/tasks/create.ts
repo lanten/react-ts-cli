@@ -1,10 +1,9 @@
 import inquirer from 'inquirer'
 import chalk from 'chalk'
 import path from 'path'
-import { pathToRegexp, match } from 'path-to-regexp'
 import fs from 'fs'
-
-import { exConsole, syncExec } from '../utils'
+import glob from 'glob'
+import { exConsole, syncExec, clearDir } from '../utils'
 
 const packageJSON = require(path.resolve(__dirname, '../../package.json'))
 
@@ -62,26 +61,27 @@ export interface TemplateConfigJSON {
 
 // -------------------------------------------------------------------------
 
-checkBaseInfo()
-  .then(() => {
-    getCreateConfig()
-  })
-  .catch((message) => {
-    exConsole.warn(message || '配置异常!')
-  })
+// // DEBUG
+// checkBaseInfo()
+//   .then(() => {
+//     getCreateConfig()
+//   })
+//   .catch((message) => {
+//     exConsole.warn(message || '配置异常!')
+//   })
 
-// test
-// createTemplate({
-//   CLI_PACKAGE_NAME: '@sbc-fe/react-ts-cli',
-//   PROJECT_NAME: 'asd',
-//   PROJECT_TITLE: 'asd',
-//   USE_REDUX: 1,
-//   USE_CENTRALIZED_API: 1,
-//   USE_GLOBAL_TOOLS: 1,
-//   USE_REACT_ROUTER: 1,
-//   USE_ANTD: 1,
-//   USE_LESS: 1,
-// })
+// test // DEBUG
+createTemplate({
+  CLI_PACKAGE_NAME: '@sbc-fe/react-ts-cli',
+  PROJECT_NAME: 'asd',
+  PROJECT_TITLE: 'asd',
+  USE_REDUX: 1,
+  USE_CENTRALIZED_API: 1,
+  USE_GLOBAL_TOOLS: 1,
+  USE_REACT_ROUTER: 1,
+  USE_ANTD: 1,
+  USE_LESS: 1,
+})
 
 /** 必填项验证 */
 function requiredValidate(input: string) {
@@ -191,7 +191,7 @@ async function checkBaseInfo() {
 }
 
 /** 获取创建目录 */
-function getCreatePath(name: string): string {
+async function getCreatePath(name: string): Promise<string> {
   const bash = process.platform == 'win32' ? 'chdir' : 'pwd'
   const runPath = syncExec({ bash }).trim()
 
@@ -203,44 +203,95 @@ function getCreatePath(name: string): string {
   const createPath = path.resolve(runPath, name)
 
   if (fs.existsSync(createPath)) {
-    exConsole.error(`文件夹: ${name} 已存在, 请更换项目名或删除文件夹后重试`)
-    process.exit()
+    await inquirer
+      .prompt({
+        name: 'next',
+        type: 'confirm',
+        message: `${chalk.red(`文件夹: [${name}] 已存在`)} 确认清空目录后继续?`,
+      })
+      .then((val) => {
+        if (val && val.next) {
+          console.log(createPath)
+          clearDir(createPath, true, false, true)
+          return Promise.resolve(createPath)
+        } else {
+          // return Promise.reject(false)
+          process.exit()
+        }
+      })
   }
 
-  return createPath
+  return Promise.resolve(createPath)
 }
 
 /** 创建模板项目 */
-function createTemplate(conf: TemplateConfig) {
-  const createPath = getCreatePath(conf.PROJECT_NAME)
+async function createTemplate(conf: TemplateConfig) {
+  const createPath = await getCreatePath(conf.PROJECT_NAME)
   const templatePath = path.resolve(__dirname, '../../react-ts-template')
 
-  // fs.mkdirSync(createPath)
+  if (!templatePath) return exConsole.warn('[clearDir]: Empty Path!')
+
+  // fs.mkdirSync(createPath) // DEBUG
 
   const templateConfigJSON = require(path.resolve(templatePath, 'template.config.json'))
-
-  handleTemplateFiles(templatePath, templateConfigJSON.includes)
-
-  // console.log({ createPath, templatePath, templateConfigJSON })
+  const filePaths = handleTemplateFiles(templatePath, templateConfigJSON.includes)
+  // console.log(filePaths)
+  filePaths.forEach((v) => copyTemplateFile(path.resolve(templatePath, v), path.resolve(createPath, v)))
 }
 
-function handleTemplateFiles(pathStr: string, includes?: TemplateConfigJSON['includes'] | true) {
-  if (!pathStr) return exConsole.warn('[clearDir]: Empty Path!')
+/**
+ * 解析需要复制的模板文件
+ * @param pathStr
+ * @param includes
+ */
+function handleTemplateFiles(pathStr: string, includes: TemplateConfigJSON['includes'] = ['**/*']): string[] {
+  const allPaths: string[] = []
 
-  const files = fs.readdirSync(pathStr)
-  console.log(files)
-  files.forEach((file) => {
-    if (includes && includes !== true && !includes.includes(file)) return
+  includes.forEach((includePath) => {
+    let includePathH = includePath
 
-    const curPath = path.resolve(pathStr, file)
+    try {
+      if (fs.statSync(path.resolve(pathStr, includePath)).isDirectory()) {
+        includePathH = `${includePath}/**/*`
+        allPaths.push(includePath)
+      }
+    } catch (error) {}
 
-    if (fs.statSync(curPath).isDirectory()) {
-      console.log(curPath, '是文件夹')
-      handleTemplateFiles(curPath, true)
-    } else {
-      console.log(curPath, '是文件')
-    }
+    const files = glob.sync(includePathH, { cwd: pathStr })
+
+    allPaths.push(...files)
   })
+
+  return allPaths
 }
 
-function copyTemplateFile(path: string) {}
+/**
+ * 复制模板文件
+ * @param filePath
+ * @param newPath
+ */
+function copyTemplateFile(filePath: string, newPath: string) {
+  if (fs.statSync(filePath).isDirectory()) {
+    fs.mkdirSync(newPath, { recursive: true })
+    exConsole.info(`[Create Dir] ${newPath}`)
+  } else {
+    const fileData = fs.readFileSync(filePath, { encoding: 'utf-8' })
+
+    fs.writeFile(newPath, replaceTemplateVars(fileData), { encoding: 'utf-8' }, (err) => {
+      if (err) {
+        exConsole.error(`[Create File] ${newPath}`)
+        exConsole.error(err)
+      } else {
+        exConsole.info(`[Create File] ${newPath}`)
+      }
+    })
+  }
+}
+
+/**
+ * 替换模板中的变量
+ * @param data
+ */
+function replaceTemplateVars(data: string): string {
+  return data
+}

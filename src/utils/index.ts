@@ -14,7 +14,7 @@ export * from './console'
  * @param {Boolean} log 是否输出日志
  */
 export function clearDir(pathStr?: string, delDir?: boolean, createDir?: boolean, log?: boolean): void {
-  if (!pathStr) return exConsole.warn('[clearDir]: Empty Path!')
+  if (!pathStr) return exConsole.warn('[clear Dir]: Empty Path!')
   let files = []
 
   if (fs.existsSync(pathStr)) {
@@ -23,11 +23,11 @@ export function clearDir(pathStr?: string, delDir?: boolean, createDir?: boolean
       const curPath = path.join(pathStr, file)
 
       if (fs.statSync(curPath).isDirectory()) {
-        clearDir(curPath, true)
-        if (log) exConsole.success(`[delete dir]: ${curPath}`)
+        clearDir(curPath, true, undefined, log)
+        if (log) exConsole.info(`[Delete Dir] ${curPath}`)
       } else {
         fs.unlinkSync(curPath)
-        if (log) exConsole.success(`[delete file]: ${curPath}`)
+        if (log) exConsole.info(`[Delete File] ${curPath}`)
       }
     })
 
