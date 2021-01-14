@@ -19,15 +19,14 @@ const config: ReactTsConfigPartial = {
   entry: {
     app: path.resolve(rootPath, 'src/index.tsx'),
   },
-/** template-start [when](HAS_PROVIDE)
 
+<if HAS_PROVIDE>
   provide: {
     <if useRedux>$store: path.resolve(rootPath, 'src/store'),</if>
     <if useCentralizedAPI>$api: path.resolve(rootPath, 'src/api'),/if>
     <if useGlobalTools>$tools: path.resolve(rootPath, 'src/tools'),</if>
   },
-template-end */
-
+<if>
   COMMON_ENV,
 
   env,

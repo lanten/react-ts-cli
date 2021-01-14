@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import path from 'path'
 import fs from 'fs'
 import glob from 'glob'
-import { exConsole, syncExec, clearDir } from '../utils'
+import { exConsole, syncExec, clearDir, replaceTemplateVars } from '../utils'
 
 const packageJSON = require(path.resolve(__dirname, '../../package.json'))
 
@@ -234,8 +234,8 @@ async function createTemplate(conf: TemplateConfig) {
   // fs.mkdirSync(createPath) // DEBUG
 
   const templateConfigJSON = require(path.resolve(templatePath, 'template.config.json'))
-  const filePaths = handleTemplateFiles(templatePath, templateConfigJSON.includes)
-  // console.log(filePaths)
+  const filePaths = handleTemplateFiles(templatePath, templateConfigJSON.includes, templateConfigJSON.ignore)
+  console.log(filePaths)
   filePaths.forEach((v) => copyTemplateFile(path.resolve(templatePath, v), path.resolve(createPath, v)))
 }
 
@@ -244,7 +244,11 @@ async function createTemplate(conf: TemplateConfig) {
  * @param pathStr
  * @param includes
  */
-function handleTemplateFiles(pathStr: string, includes: TemplateConfigJSON['includes'] = ['**/*']): string[] {
+function handleTemplateFiles(
+  pathStr: string,
+  includes: TemplateConfigJSON['includes'] = ['**/*'],
+  ignore?: string | string[]
+): string[] {
   const allPaths: string[] = []
 
   includes.forEach((includePath) => {
@@ -257,7 +261,7 @@ function handleTemplateFiles(pathStr: string, includes: TemplateConfigJSON['incl
       }
     } catch (error) {}
 
-    const files = glob.sync(includePathH, { cwd: pathStr })
+    const files = glob.sync(includePathH, { cwd: pathStr, ignore })
 
     allPaths.push(...files)
   })
@@ -286,12 +290,4 @@ function copyTemplateFile(filePath: string, newPath: string) {
       }
     })
   }
-}
-
-/**
- * 替换模板中的变量
- * @param data
- */
-function replaceTemplateVars(data: string): string {
-  return data
 }

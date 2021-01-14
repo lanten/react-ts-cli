@@ -4,6 +4,7 @@ import { execSync } from 'child_process'
 
 import { exConsole } from './console'
 export * from './console'
+export * from './template-parser'
 
 /**
  * 清空文件夹
