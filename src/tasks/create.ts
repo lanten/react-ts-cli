@@ -240,7 +240,9 @@ async function createTemplate(conf: TemplateConfig) {
 
   // fs.mkdirSync(createPath) // DEBUG
 
-  const templateConfigJSON = require(path.resolve(templatePath, 'template.config.json'))
+  let templateConfigFN = require(path.resolve(templatePath, 'template.config.js'))
+  if (templateConfigFN.default) templateConfigFN = templateConfigFN.default
+  const templateConfigJSON = templateConfigFN(conf)
   const filePaths = handleTemplateFiles(templatePath, templateConfigJSON.includes, templateConfigJSON.ignore)
   console.log(filePaths, conf)
   filePaths.forEach((v) => copyTemplateFile(templatePath, createPath, v, conf))

@@ -9,10 +9,12 @@
     "prepare": "npm run build:pkg",
     "build:pkg": "rm -rf ./dist && tsc -p ./tsconfig.json -d",
     "build:demo": "npm run build:pkg && node bin/react-ts-build.js",
-    "test": "npm run build:pkg && node bin/react-ts-create.js",
+    "test": "npm run build:pkg && node bin/index.js create",
+    "test2": "npm run build:pkg && node bin/react-ts-create.js",
     "get-config": "npm run build:pkg && node dist/config/get-config.js"
   },
   "bin": {
+    "react-ts": "./bin/index.js",
     "react-ts-create": "./bin/react-ts-create.js",
     "react-ts-dev": "./bin/react-ts-dev.js",
     "react-ts-build": "./bin/react-ts-build.js"
