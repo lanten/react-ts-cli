@@ -1,6 +1,6 @@
 {
-  "name": "@sbc-fe/react-ts-cli",
-  "version": "5.0.0-alpha.0",
+  "name": "rc-ts-cli",
+  "version": "0.0.1-alpha.0",
   "description": "React + Typescript Web 项目脚手架",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -9,8 +9,7 @@
     "prepare": "npm run build:pkg",
     "build:pkg": "rm -rf ./dist && tsc -p ./tsconfig.json -d",
     "build:demo": "npm run build:pkg && node bin/react-ts-build.js",
-    "test": "npm run build:pkg && node bin/index.js create",
-    "test2": "npm run build:pkg && node bin/react-ts-create.js",
+    "test": "npm run build:pkg && node bin/index.js",
     "get-config": "npm run build:pkg && node dist/config/get-config.js"
   },
   "bin": {
@@ -21,11 +20,17 @@
   },
   "files": [
     "bin",
-    "lib",
     "types",
-    "template",
-    "dist"
+    "react-ts-template",
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
   ],
+  "peerDependencies": {
+    "react": ">=17",
+    "react-dom": ">=17"
+  },
   "dependencies": {
     "@types/default-gateway": "^3.0.1",
     "@types/html-webpack-plugin": "^3.2.4",
@@ -73,15 +78,7 @@
     "webpack-dev-server": "^3.11.0",
     "webpackbar": "^5.0.0-3"
   },
-  "devDependencies": {
-    "@types/path-to-regexp": "^1.7.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "less": "^3.12.2",
-    "less-loader": "^7.1.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
-  },
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lanten/react-ts-cli.git"
