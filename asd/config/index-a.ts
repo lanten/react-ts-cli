@@ -1,5 +1,5 @@
 import path from 'path'
-import { ReactTsConfigPartial } from '<slot>CLI_PACKAGE_NAME</slot>'
+import { ReactTsConfigPartial } from '@sbc-fe/react-ts-cli'
 import { env, publicPath, COMMON_ENV } from './env.config'
 import { afterWebpackConfig } from './webpack.config'
 
@@ -20,17 +20,13 @@ const config: ReactTsConfigPartial = {
     app: path.resolve(rootPath, 'src/index.tsx'),
   },
 
-<if HAS_PROVIDE>
   provide: {
-    <if useRedux>$store: path.resolve(rootPath, 'src/store'),</if>
-    <if useCentralizedAPI>$api: path.resolve(rootPath, 'src/api'),/if>
-    <if useGlobalTools>$tools: path.resolve(rootPath, 'src/tools'),</if>
   },
-<if>
+
   COMMON_ENV,
 
   env,
-  afterWebpackConfig: afterWebpackConfig as any,
+  afterWebpackConfig,
 }
 
 export default config

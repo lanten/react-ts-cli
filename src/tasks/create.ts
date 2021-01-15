@@ -3,7 +3,14 @@ import chalk from 'chalk'
 import path from 'path'
 import fs from 'fs'
 import glob from 'glob'
-import { exConsole, syncExec, clearDir, replaceTemplateVars } from '../utils'
+import {
+  exConsole,
+  syncExec,
+  clearDir,
+  replaceTemplate,
+  handleTemplateRenderContent,
+  TemplateRenderRes,
+} from '../utils'
 
 const packageJSON = require(path.resolve(__dirname, '../../package.json'))
 
@@ -75,9 +82,9 @@ createTemplate({
   CLI_PACKAGE_NAME: '@sbc-fe/react-ts-cli',
   PROJECT_NAME: 'asd',
   PROJECT_TITLE: 'asd',
-  USE_REDUX: 1,
-  USE_CENTRALIZED_API: 1,
-  USE_GLOBAL_TOOLS: 1,
+  USE_REDUX: 0,
+  USE_CENTRALIZED_API: 0,
+  USE_GLOBAL_TOOLS: 0,
   USE_REACT_ROUTER: 1,
   USE_ANTD: 1,
   USE_LESS: 1,
@@ -235,8 +242,8 @@ async function createTemplate(conf: TemplateConfig) {
 
   const templateConfigJSON = require(path.resolve(templatePath, 'template.config.json'))
   const filePaths = handleTemplateFiles(templatePath, templateConfigJSON.includes, templateConfigJSON.ignore)
-  console.log(filePaths)
-  filePaths.forEach((v) => copyTemplateFile(path.resolve(templatePath, v), path.resolve(createPath, v)))
+  console.log(filePaths, conf)
+  filePaths.forEach((v) => copyTemplateFile(templatePath, createPath, v, conf))
 }
 
 /**
@@ -269,25 +276,50 @@ function handleTemplateFiles(
   return allPaths
 }
 
-/**
- * 复制模板文件
- * @param filePath
- * @param newPath
- */
-function copyTemplateFile(filePath: string, newPath: string) {
-  if (fs.statSync(filePath).isDirectory()) {
-    fs.mkdirSync(newPath, { recursive: true })
-    exConsole.info(`[Create Dir] ${newPath}`)
-  } else {
-    const fileData = fs.readFileSync(filePath, { encoding: 'utf-8' })
+function copyTemplateFile(filePath: string, newPath: string, relativePath: string, conf: TemplateConfig): void {
+  const sourcePath = path.resolve(filePath, relativePath)
+  let newPathH = path.resolve(newPath, relativePath)
 
-    fs.writeFile(newPath, replaceTemplateVars(fileData), { encoding: 'utf-8' }, (err) => {
-      if (err) {
-        exConsole.error(`[Create File] ${newPath}`)
-        exConsole.error(err)
-      } else {
-        exConsole.info(`[Create File] ${newPath}`)
-      }
-    })
+  // 创建目录
+  if (fs.statSync(sourcePath).isDirectory()) {
+    fs.mkdirSync(newPathH, { recursive: true })
+    exConsole.info(`[Create Dir] ${newPathH}`)
+    return
   }
+
+  let fileData = fs.readFileSync(sourcePath, { encoding: 'utf-8' })
+
+  // 字符串替换处理方案
+  if (/\.replace$/.test(relativePath)) {
+    newPathH = newPathH.replace(/\.replace$/, '')
+    fileData = replaceTemplate(fileData, conf)
+  }
+
+  // 函数处理方案
+  if (/\.render\.js$/.test(relativePath)) {
+    let render = require(sourcePath)
+    if (render.default) render = render.default
+    const templateRes: TemplateRenderRes = render(conf)
+
+    // 忽略文件复制
+    if (templateRes.ignore) return
+
+    if (templateRes.fileName) {
+      newPathH = newPathH.replace(/^(.+)\/.+$/, `$1/${templateRes.fileName}`)
+    } else {
+      newPathH = newPathH.replace(/\.render\.js$/, '')
+    }
+
+    fileData = handleTemplateRenderContent(templateRes.content)
+  }
+
+  // 输出文件
+  fs.writeFile(newPathH, fileData, { encoding: 'utf-8' }, (err) => {
+    if (err) {
+      exConsole.error(`[Create File] ${newPathH}`)
+      exConsole.error(err)
+    } else {
+      exConsole.info(`[Create File] ${newPathH}`)
+    }
+  })
 }
